@@ -1,0 +1,20 @@
+# Project exclude paths
+*.class
+*.log
+
+# Package Files
+*.jar
+*.war
+*.ear
+
+# Intellij
+.idea/
+target/
+
+# Eclipse
+.classpath/
+.project/
+.settings/
+
+# Mac
+.DS_Store
