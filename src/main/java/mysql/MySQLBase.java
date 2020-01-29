@@ -4,7 +4,7 @@ import java.sql.*;
 
 public class MySQLBase {
     public static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
-    public static final String DB_URL = "jdbc:mysql://localhost:3306/world?autoReconnect=true&useSSL=false";
+    public static final String DB_URL = "jdbc:mysql://localhost:3306/epam?autoReconnect=true&useSSL=false";
     public static final String USER = "Iurii_Kozak";
     public static final String PASS = "MySQL#2020";
 
