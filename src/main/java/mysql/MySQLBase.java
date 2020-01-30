@@ -3,8 +3,7 @@ package mysql;
 import utils.*;
 
 import java.sql.*;
-import java.util.Base64;
-import java.util.Properties;
+import java.util.*;
 
 public class MySQLBase {
     Properties properties = PropertiesLoader.loadProperties("config");
