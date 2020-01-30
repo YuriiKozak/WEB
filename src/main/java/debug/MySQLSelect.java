@@ -1,4 +1,6 @@
-package mysql;
+package debug;
+
+import mysql.*;
 
 import java.sql.*;
 

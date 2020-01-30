@@ -1,5 +1,6 @@
-package mysql;
+package debug;
 
+import mysql.*;
 import utils.Utils;
 
 public class MySQLUpdate extends MySQLBase {

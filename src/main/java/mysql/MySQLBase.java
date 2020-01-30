@@ -1,17 +1,18 @@
 package mysql;
 
+import utils.*;
+
 import java.sql.*;
+import java.util.Base64;
+import java.util.Properties;
 
 public class MySQLBase {
-    public static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
-    public static final String DB_URL = "jdbc:mysql://localhost:3306/epam?" +
-            "autoReconnect=true&allowPublicKeyRetrieval=true&useSSL=false";
-    public static final String USER = "Iurii_Kozak";
-    public static final String PASS = "MySQL#2020";
+    Properties properties = PropertiesLoader.loadProperties("config");
 
     private Connection getConnection() throws Exception {
-        Class.forName(JDBC_DRIVER);
-        return DriverManager.getConnection(DB_URL, USER, PASS);
+        Class.forName(properties.getProperty("jdbcDriver"));
+        return DriverManager.getConnection(properties.getProperty("dbUrl"), properties.getProperty("user"),
+                new String(Base64.getDecoder().decode(properties.getProperty("password"))));
     }
 
     private PreparedStatement prepareStatement(String query) throws Exception {

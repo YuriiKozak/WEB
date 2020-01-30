@@ -1,5 +1,6 @@
-package mysql;
+package debug;
 
+import mysql.*;
 import utils.Utils;
 
 import java.util.Arrays;
