@@ -10,8 +10,19 @@
         <servlet-class>webservices.MembersWebServices</servlet-class>
     </servlet>
 
+    <servlet>
+        <servlet-name>mailService</servlet-name>
+        <servlet-class>mailservice.MailService</servlet-class>
+    </servlet>
+
     <servlet-mapping>
         <servlet-name>membersWebServices</servlet-name>
         <url-pattern>/members</url-pattern>
     </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>mailService</servlet-name>
+        <url-pattern>/mails</url-pattern>
+    </servlet-mapping>
+
 </web-app>
