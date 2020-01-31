@@ -46,6 +46,6 @@ public class MailService extends HttpServlet {
                 Arrays.asList("subject", "email", "body"), Arrays.asList(subject, email, body));
         mySQLBase.executeUpdate(query);
         PrintWriter out = response.getWriter();
-        out.print(subject + "\n" + email + "\n" + body);
+        out.print(subject + " " + email + " " + body);
     }
 }
