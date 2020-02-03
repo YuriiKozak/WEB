@@ -3,11 +3,13 @@ package webservices;
 import com.google.gson.Gson;
 import mysql.*;
 
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.*;
 import java.sql.*;
 import java.util.stream.Collectors;
 
+@WebServlet("/members")
 public class MembersWebServices extends HttpServlet {
     MySQLBase mySQLBase = new MySQLBase();
     Gson gson = new Gson();

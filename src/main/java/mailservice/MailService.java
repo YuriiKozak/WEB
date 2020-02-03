@@ -3,12 +3,14 @@ package mailservice;
 import com.google.gson.Gson;
 import mysql.*;
 
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.*;
 import java.sql.ResultSet;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
+@WebServlet("/mails")
 public class MailService extends HttpServlet {
     MySQLBase mySQLBase = new MySQLBase();
     Gson gson = new Gson();
