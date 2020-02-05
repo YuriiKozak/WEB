@@ -14,22 +14,27 @@ import java.util.stream.Collectors;
 public class MailService extends HttpServlet {
     MySQLBase mySQLBase = new MySQLBase();
     Gson gson = new Gson();
+    String mails = "mails";
+    String id = "id";
+    String subject = "subject";
+    String email = "email";
+    String body = "body";
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         synchronized (this) {
-            String query = MySQLQueries.selectFromQuery("mails");
+            String query = MySQLQueries.selectFromQuery(mails);
             ResultSet resultSet = mySQLBase.executeQuery(query);
 
             StringBuilder stringBuilder = new StringBuilder();
             try {
                 while (resultSet.next()) {
-                    int id = resultSet.getInt("id");
-                    String subject = resultSet.getString("subject");
-                    String email = resultSet.getString("email");
-                    String body = resultSet.getString("body");
-                    stringBuilder.append(id).append("\n").append(subject).append("\n")
-                            .append(email).append("\n").append(body).append("\n").append("\n");
+                    int idValue = resultSet.getInt(id);
+                    String subjectValue = resultSet.getString(subject);
+                    String emailValue = resultSet.getString(email);
+                    String bodyValue = resultSet.getString(body);
+                    stringBuilder.append(idValue).append("\n").append(subjectValue).append("\n")
+                            .append(emailValue).append("\n").append(bodyValue).append("\n").append("\n");
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -44,14 +49,27 @@ public class MailService extends HttpServlet {
         synchronized (this) {
             String json = request.getReader().lines().collect(Collectors.joining());
             Mail mail = gson.fromJson(json, Mail.class);
-            String subject = mail.getSubject();
-            String email = mail.getEmail();
-            String body = mail.getBody();
-            String query = MySQLQueries.insertIntoQueryLV("mails",
-                    Arrays.asList("subject", "email", "body"), Arrays.asList(subject, email, body));
+            String subjectValue = mail.getSubject();
+            String emailValue = mail.getEmail();
+            String bodyValue = mail.getBody();
+            String query = MySQLQueries.insertIntoQueryLV(mails,
+                    Arrays.asList(subject, email, body), Arrays.asList(subjectValue, emailValue, bodyValue));
             mySQLBase.executeUpdate(query);
             PrintWriter out = response.getWriter();
-            out.print(subject + " " + email + " " + body);
+            out.print(subjectValue + " " + emailValue + " " + bodyValue);
+        }
+    }
+
+    @Override
+    public void doDelete(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        synchronized (this) {
+            String json = request.getReader().lines().collect(Collectors.joining());
+            Mail mail = gson.fromJson(json, Mail.class);
+            String idValue = mail.getId();
+            String query = MySQLQueries.deleteQuery(mails, id, idValue);
+            mySQLBase.executeUpdate(query);
+            PrintWriter out = response.getWriter();
+            out.print(idValue);
         }
     }
 }

@@ -10,9 +10,10 @@ public class MySQLUpdate extends MySQLBase {
     }
 
     public static void updateMembers() {
+        String id = "1";
         String fullName = new Utils().randomFullName;
         String query = MySQLQueries.updateQuery("members",
-                "full_name", fullName, "id", "1");
+                "full_name", fullName, "id", id);
         new MySQLBase().executeUpdate(query);
     }
 

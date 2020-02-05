@@ -32,4 +32,8 @@ public class MySQLQueries {
         return "UPDATE " + table + " SET " + setValueName + " = '" + setValue +
                 "' WHERE " + whereValueName + " = '" + whereValue + "'";
     }
+
+    public static String deleteQuery(String table, String whereValueName, String whereValue) {
+        return "DELETE FROM " + table + " WHERE " + whereValueName + " = '" + whereValue + "'";
+    }
 }
