@@ -1,5 +1,6 @@
 package mailservice;
 
+import com.google.common.base.Strings;
 import com.google.gson.Gson;
 import mysql.*;
 
@@ -23,11 +24,31 @@ public class MailService extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         synchronized (this) {
-            String query = MySQLQueries.selectFromQuery(mails);
-            ResultSet resultSet = mySQLBase.executeQuery(query);
+            ResultSet resultSet = null;
+            String json = request.getReader().lines().collect(Collectors.joining());
+            Mail mail = gson.fromJson(json, Mail.class);
+            try {
+                if (!Strings.isNullOrEmpty(json)) {
+                    if (!Strings.isNullOrEmpty(mail.getSubject())) {
+                        String query = MySQLQueries.selectFromQuery(mails, subject, mail.getSubject());
+                        resultSet = mySQLBase.executeQuery(query);
+                    } else if (!Strings.isNullOrEmpty(mail.getEmail())) {
+                        String query = MySQLQueries.selectFromQuery(mails, email, mail.getEmail());
+                        resultSet = mySQLBase.executeQuery(query);
+                    } else {
+                        throw new NullPointerException();
+                    }
+                } else {
+                    String query = MySQLQueries.selectFromQuery(mails);
+                    resultSet = mySQLBase.executeQuery(query);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
             StringBuilder stringBuilder = new StringBuilder();
             try {
+                assert resultSet != null;
                 while (resultSet.next()) {
                     int idValue = resultSet.getInt(id);
                     String subjectValue = resultSet.getString(subject);
@@ -39,6 +60,7 @@ public class MailService extends HttpServlet {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+
             PrintWriter out = response.getWriter();
             out.print(stringBuilder.toString());
         }
@@ -65,11 +87,12 @@ public class MailService extends HttpServlet {
         synchronized (this) {
             String json = request.getReader().lines().collect(Collectors.joining());
             Mail mail = gson.fromJson(json, Mail.class);
-            String idValue = mail.getId();
-            String query = MySQLQueries.deleteQuery(mails, id, idValue);
+            String subjectValue = mail.getSubject();
+            String emailValue = mail.getEmail();
+            String query = MySQLQueries.deleteQuery(mails, subject, subjectValue, email, emailValue);
             mySQLBase.executeUpdate(query);
             PrintWriter out = response.getWriter();
-            out.print(idValue);
+            out.print(subjectValue + " " + emailValue);
         }
     }
 }

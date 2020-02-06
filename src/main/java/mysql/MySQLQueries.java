@@ -7,6 +7,10 @@ public class MySQLQueries {
         return "SELECT * FROM " + table;
     }
 
+    public static String selectFromQuery(String table, String whereValueName, String whereValue) {
+        return "SELECT * FROM " + table + " WHERE " + whereValueName + " = '" + whereValue + "'";
+    }
+
     public static String insertIntoQueryV(String table, String column, String value) {
         return "INSERT INTO " + table + " (" + column + ") VALUES ('" + value + "')";
     }
@@ -35,5 +39,11 @@ public class MySQLQueries {
 
     public static String deleteQuery(String table, String whereValueName, String whereValue) {
         return "DELETE FROM " + table + " WHERE " + whereValueName + " = '" + whereValue + "'";
+    }
+
+    public static String deleteQuery(String table, String whereValueName, String whereValue,
+                                     String whereValueName2, String whereValue2) {
+        return "DELETE FROM " + table + " WHERE " + whereValueName + " = '" + whereValue +
+                "' AND " + whereValueName2 + " = '" + whereValue2 + "'";
     }
 }
