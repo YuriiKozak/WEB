@@ -24,26 +24,22 @@ public class MailService extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         synchronized (this) {
-            ResultSet resultSet = null;
-            String json = request.getReader().lines().collect(Collectors.joining());
-            Mail mail = gson.fromJson(json, Mail.class);
+            ResultSet resultSet;
+            String parameterName = null;
+            String parameterValue = null;
             try {
-                if (!Strings.isNullOrEmpty(json)) {
-                    if (!Strings.isNullOrEmpty(mail.getSubject())) {
-                        String query = MySQLQueries.selectFromQuery(mails, subject, mail.getSubject());
-                        resultSet = mySQLBase.executeQuery(query);
-                    } else if (!Strings.isNullOrEmpty(mail.getEmail())) {
-                        String query = MySQLQueries.selectFromQuery(mails, email, mail.getEmail());
-                        resultSet = mySQLBase.executeQuery(query);
-                    } else {
-                        throw new NullPointerException();
-                    }
-                } else {
-                    String query = MySQLQueries.selectFromQuery(mails);
-                    resultSet = mySQLBase.executeQuery(query);
-                }
+                parameterName = request.getParameterNames().nextElement();
+                parameterValue = request.getParameter(parameterName);
             } catch (Exception e) {
                 e.printStackTrace();
+            }
+
+            if (!Strings.isNullOrEmpty(parameterName)) {
+                String query = MySQLQueries.selectFromQuery(mails, parameterName, parameterValue);
+                resultSet = mySQLBase.executeQuery(query);
+            } else {
+                String query = MySQLQueries.selectFromQuery(mails);
+                resultSet = mySQLBase.executeQuery(query);
             }
 
             StringBuilder stringBuilder = new StringBuilder();
